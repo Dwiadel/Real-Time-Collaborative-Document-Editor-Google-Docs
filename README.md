@@ -1,66 +1,197 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 📄 Real-Time Collaborative Document Editor (Google Docs Clone)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplikasi web kolaborasi dokumen secara real-time berbasis Laravel 12, Membuat Google Docs.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 🚀 Fitur Utama
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- ✅ **Multi-User Editing** — 2 atau lebih pengguna dapat mengedit dokumen yang sama secara bersamaan
+- ✅ **Live Cursor Tracking** — Posisi kursor setiap pengguna ditampilkan secara real-time
+- ✅ **Version History** — Riwayat perubahan dokumen tersimpan otomatis setiap 30 detik
+- ✅ **Conflict Resolution / Who Edited What** — Menampilkan siapa yang mengedit bagian mana
+- ✅ **Auto Save** — Dokumen tersimpan otomatis saat pengguna mengetik
+- ✅ **Autentikasi** — Sistem login dan register pengguna
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🛠️ Teknologi yang Digunakan
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+| Teknologi | Kegunaan |
+|-----------|----------|
+| Laravel 12 | Backend Framework |
+| Laravel Breeze | Autentikasi (Login/Register) |
+| Laravel Reverb | WebSocket untuk Real-time |
+| MySQL | Database |
+| Tailwind CSS | Styling / UI |
+| Vite | Asset Bundler |
+| Pusher JS | Client WebSocket |
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## ⚙️ Cara Instalasi & Menjalankan Project
 
-## Laravel Sponsors
+### Prasyarat
+Pastikan sudah terinstall:
+- PHP 8.2+
+- Composer
+- Node.js & NPM
+- MySQL
+- Laragon / XAMPP
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### Langkah Instalasi
 
-### Premium Partners
+**1. Clone Repository**
+```bash
+git clone https://github.com/Dwiadel/Real-Time-Collaborative-Document-Editor-Google-Docs.git
+cd Real-Time-Collaborative-Document-Editor-Google-Docs
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+**2. Install Dependencies PHP**
+```bash
+composer install
+```
 
-## Contributing
+**3. Install Dependencies Node**
+```bash
+npm install
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+**4. Setup Environment**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Code of Conduct
+**5. Konfigurasi Database**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Buka file `.env` dan sesuaikan:
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=gdocs_app
+DB_USERNAME=root
+DB_PASSWORD=
+```
 
-## Security Vulnerabilities
+**6. Buat Database**
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Buka phpMyAdmin → buat database baru bernama `gdocs_app`
 
-## License
+**7. Jalankan Migration**
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+**8. Jalankan Aplikasi**
+
+Buka 3 terminal secara bersamaan:
+
+Terminal 1:
+```bash
+php artisan serve
+```
+
+Terminal 2:
+```bash
+npm run dev
+```
+
+Terminal 3:
+```bash
+php artisan reverb:start
+```
+
+**9. Buka di Browser**
+http://127.0.0.1:8000/register
+
+---
+
+## 📁 Struktur Project
+gdocs-app/
+├── app/
+│   ├── Events/
+│   │   ├── DocumentUpdated.php    # Event broadcast update dokumen
+│   │   └── CursorMoved.php        # Event broadcast posisi kursor
+│   ├── Http/Controllers/
+│   │   └── DocumentController.php # Controller utama dokumen
+│   └── Models/
+│       ├── Document.php           # Model dokumen
+│       └── DocumentHistory.php    # Model riwayat dokumen
+├── database/migrations/
+│   ├── create_documents_table.php
+│   └── create_document_histories_table.php
+├── resources/views/documents/
+│   ├── index.blade.php            # Halaman daftar dokumen
+│   └── edit.blade.php             # Halaman editor dokumen
+└── routes/
+└── web.php                    # Routing aplikasi
+
+---
+
+## 🗄️ Struktur Database
+
+### Tabel `documents`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint | Primary key |
+| user_id | bigint | ID pemilik dokumen |
+| title | varchar | Judul dokumen |
+| content | longtext | Isi dokumen |
+| created_at | timestamp | Waktu dibuat |
+| updated_at | timestamp | Waktu diupdate |
+
+### Tabel `document_histories`
+| Kolom | Tipe | Keterangan |
+|-------|------|------------|
+| id | bigint | Primary key |
+| document_id | bigint | ID dokumen |
+| user_id | bigint | ID pengguna yang edit |
+| title | varchar | Judul saat itu |
+| content | longtext | Isi dokumen saat itu |
+| created_at | timestamp | Waktu perubahan |
+
+---
+
+## 🔄 Cara Penggunaan
+
+### 1. Register & Login
+- Buka `http://127.0.0.1:8000/register`
+- Daftar akun baru
+- Login dengan akun yang sudah didaftarkan
+
+### 2. Membuat Dokumen Baru
+- Klik tombol **"+ Buat Dokumen"**
+- Dokumen baru otomatis terbuka di editor
+
+### 3. Mengedit Dokumen
+- Klik judul untuk mengubah nama dokumen
+- Klik area editor untuk mulai mengetik
+- Dokumen tersimpan otomatis setiap 1 detik
+
+### 4. Kolaborasi Real-time
+- Bagikan URL dokumen ke pengguna lain
+- Contoh: `http://127.0.0.1:8000/documents/1/edit`
+- Pengguna lain buka URL yang sama → bisa edit bersamaan
+
+### 5. Melihat Riwayat Perubahan
+- Klik tombol **"📋 History"** di navbar
+- Klik salah satu riwayat untuk memulihkan versi tersebut
+
+### 6. Melihat Who Edited What
+- Klik tombol **"⚡ Who Edited"** di navbar
+- Menampilkan log siapa yang terakhir mengedit
+
+
+---
+
+## 📝 Catatan
+
+- Aplikasi ini berjalan secara **lokal** (localhost)
+
+---
+
+## 📜 Lisensi
+
+Project ini dibuat untuk keperluan **tugas mata kuliah Pemrograman Web**.
