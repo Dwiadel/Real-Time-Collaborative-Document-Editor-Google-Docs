@@ -1,6 +1,6 @@
-# 📄 Real-Time Collaborative Document Editor (Google Docs Clone)
+# 📄 Real-Time Collaborative Document Editor (Google Docs)
 
-Aplikasi web kolaborasi dokumen secara real-time berbasis Laravel 12, Membuat Google Docs.
+Aplikasi web kolaborasi dokumen secara real-time berbasis Laravel 12 Google Docs.
 
 ---
 
