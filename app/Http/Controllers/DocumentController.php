@@ -43,11 +43,12 @@ class DocumentController extends Controller
     }
 
     public function update(Request $request, Document $document)
-    {
-        $document->update([
-            'title'   => $request->title,
-            'content' => $request->content,
-        ]);
+{
+    $document->update([
+        'title'      => $request->title,
+        'content'    => $request->content,
+        'updated_by' => auth()->user()->name,
+    ]);
 
         // Simpan history setiap 30 detik
         $lastHistory = DocumentHistory::where('document_id', $document->id)
@@ -91,4 +92,61 @@ class DocumentController extends Controller
                     ->get();
         return response()->json($histories);
     }
+    public function cursor(Request $request, Document $document)
+{
+    $colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD'];
+    $colorIndex = abs(crc32(auth()->user()->name)) % count($colors);
+    
+    broadcast(new \App\Events\CursorMoved(
+        $document->id,
+        auth()->user()->name,
+        $colors[$colorIndex],
+        $request->position ?? 0
+    ))->toOthers();
+
+    return response()->json(['success' => true]);
+}
+
+public function poll(Document $document)
+{
+    return response()->json([
+        'title'      => $document->title,
+        'content'    => $document->content,
+        'updated_by' => $document->updatedBy ?? '',
+        'updated_at' => $document->updated_at,
+    ]);
+}
+
+public function setActive(Request $request, Document $document)
+{
+    cache()->put(
+        'active_' . $document->id . '_' . auth()->id(),
+        auth()->user()->name,
+        now()->addSeconds(5)
+    );
+    return response()->json(['success' => true]);
+}
+
+public function getActiveUsers(Document $document)
+{
+    $users = [];
+    $allUsers = \App\Models\User::all();
+    foreach ($allUsers as $user) {
+        $key = 'active_' . $document->id . '_' . $user->id;
+        if (cache()->has($key)) {
+            $users[] = [
+                'name'  => $user->name,
+                'color' => $this->getUserColor($user->name),
+            ];
+        }
+    }
+    return response()->json($users);
+}
+
+private function getUserColor(string $name): string
+{
+    $colors = ['#FF6B6B','#4ECDC4','#45B7D1','#96CEB4','#FFEAA7','#DDA0DD'];
+    $index = abs(crc32($name)) % count($colors);
+    return $colors[$index];
+}
 }
